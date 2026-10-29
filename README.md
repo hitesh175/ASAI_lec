@@ -5,13 +5,14 @@ A small coursework example demonstrating configuration loading with `python-dote
 ## Contents
 
 - [Python_exam.py](Python_exam.py): loads `MAIN_KEY` and `SECRET_KEY` and reports whether both are present.
-- `requirements.txt`: currently empty.
+- [requirements.txt](requirements.txt): runtime dependency.
+- [.env.example](.env.example): dummy configuration template.
 
 ## Run with sample values
 
 ```bash
 python -m venv .venv
-python -m pip install python-dotenv
+python -m pip install -r requirements.txt
 python Python_exam.py
 ```
 
@@ -22,8 +23,16 @@ MAIN_KEY=example-main
 SECRET_KEY=example-secret
 ```
 
+Copy `.env.example` to `.env` for local sample configuration. Configuration is resolved beside the script, so launching from another directory works.
+
 ## Configuration handling
 
-The current script prints the loaded values. Use dummy values when running this exercise. The repository also tracks a `.env` file; real credentials should be kept outside version control and should never be included in screenshots or logs.
+The script reports success or missing variable names without printing their values. It exits with status 1 when required values are missing. Use dummy values when running this exercise. The repository still tracks its original `.env` file; `.gitignore` prevents new untracked environment files from being added, but does not remove the existing file from Git history. real credentials should be kept outside version control and should never be included in screenshots or logs.
 
 This is a configuration-loading demonstration, with no external API integration.
+
+## Regression checks
+
+```bash
+python -m unittest discover -s tests -v
+```

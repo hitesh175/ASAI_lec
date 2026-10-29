@@ -1,19 +1,20 @@
-from dotenv import load_dotenv
+"""Load example configuration without displaying secret values."""
 import os
+from pathlib import Path
 
-# Load variables from .env file
-load_dotenv()
+from dotenv import load_dotenv
 
-# Read the keys
-main_key = os.getenv("MAIN_KEY")
-secret_key = os.getenv("SECRET_KEY")
 
-# Use the keys
-print("Main Key:", main_key)
-print("Secret Key:", secret_key)
-
-api_key = main_key
-if main_key and secret_key:
+def main():
+    load_dotenv(Path(__file__).resolve().with_name(".env"))
+    required = ("MAIN_KEY", "SECRET_KEY")
+    missing = [name for name in required if not os.getenv(name, "").strip()]
+    if missing:
+        print("Missing configuration: " + ", ".join(missing))
+        return 1
     print("Keys loaded successfully")
-else:
-    print("Keys missing")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
